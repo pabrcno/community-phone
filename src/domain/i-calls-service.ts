@@ -43,10 +43,6 @@ export interface ICallsService {
    * Response:
    * - Returns the total count of such calls as a number.
    *
-   * Cron Logic Interaction:
-   * - Calls that are auto-closed after one hour are excluded from this count.
-   * - The `/metrics` endpoint provides this count for real-time monitoring.
-   *
    * @returns The number of calls without an `ended` timestamp in the last two hours.
    */
   getStaleCallsCount(): Promise<number>;
