@@ -57,7 +57,7 @@ describe("CallsService", () => {
 
       const event: TCallEvent = {
         call_id: "123",
-        started: startTime.toISOString(),
+
         ended: endTime.toISOString(),
         from: "123",
         to: "456",
@@ -115,6 +115,20 @@ describe("CallsService", () => {
 
         await expect(service.handleEvent(event)).rejects.toThrow(
           "Invalid event: Must have either started or ended timestamp"
+        );
+      });
+
+      it("should throw BadRequestError if both started and ended are provided", async () => {
+        const event: TCallEvent = {
+          call_id: "123",
+          started: new Date().toISOString(),
+          ended: new Date().toISOString(),
+          from: "123",
+          to: "456",
+        };
+
+        await expect(service.handleEvent(event)).rejects.toThrow(
+          "Invalid event: Cannot have both started and ended timestamps"
         );
       });
 

@@ -75,6 +75,12 @@ export class CallsService implements ICallsService {
       throw new BadRequestError("Invalid event: Missing call_id");
     }
 
+    if (event.started && event.ended) {
+      throw new BadRequestError(
+        "Invalid event: Cannot have both started and ended timestamps"
+      );
+    }
+
     if (!event.started && !event.ended) {
       throw new BadRequestError(
         "Invalid event: Must have either started or ended timestamp"
