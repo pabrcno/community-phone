@@ -11,8 +11,6 @@ const env = (() => {
     DB_NAME: process.env.DB_NAME!,
     DB_PASSWORD: process.env.DB_PASSWORD!,
     DB_PORT: Number(process.env.DB_PORT!),
-    SSL_KEY_PATH: process.env.SSL_KEY_PATH!,
-    SSL_CERT_PATH: process.env.SSL_CERT_PATH!,
     PORT: process.env.PORT!,
   } as const;
 
@@ -22,8 +20,7 @@ const env = (() => {
     !env.DB_NAME ||
     !env.DB_PASSWORD ||
     !env.DB_PORT ||
-    !env.SSL_KEY_PATH ||
-    !env.SSL_CERT_PATH
+    !env.PORT
   ) {
     throw new Error("Missing environment variables");
   }

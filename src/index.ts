@@ -1,14 +1,8 @@
-import https from "https";
-import fs from "fs";
+import http from "http";
 import { callsHandler, env } from "./injector.ts";
 import { logger } from "./core/index.ts";
 
-const options = {
-  key: fs.readFileSync(env.SSL_KEY_PATH),
-  cert: fs.readFileSync(env.SSL_CERT_PATH),
-};
-
-const server = https.createServer(options, async (req, res) => {
+const server = http.createServer(async (req, res) => {
   if (req.url === "/events" && req.method === "POST") {
     await callsHandler.handleEvent(req, res);
     return;
