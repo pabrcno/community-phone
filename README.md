@@ -2,6 +2,14 @@
 
 A service for tracking phone calls, recording their start and end times, and providing metrics about unfinished calls.
 
+## Features
+
+- Track call start events with caller and recipient information
+- Record call end events
+- Find stale unfinished calls
+- PostgreSQL persistence
+- Error handling for invalid events and database operations
+
 ## Testing the API
 
 http://community-phone.sliplane.app
@@ -74,15 +82,6 @@ Used to retrieve metrics about the call events. The response will include the co
       "error": "Failed to retrieve metrics"
     }
     ```
-
-## Features
-
-- Track call start events with caller and recipient information
-- Record call end events
-- Query unfinished calls from the last 2 hours
-- Find stale unfinished calls
-- PostgreSQL persistence
-- Error handling for invalid events and database operations
 
 ## SSL Certificate Generation
 
