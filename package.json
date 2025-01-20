@@ -1,0 +1,24 @@
+{
+  "name": "community-phone-challenge",
+  "version": "1.0.0",
+  "description": "Challenge for community phone",
+  "main": "./src/index.ts",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "start": "node --watch src/index.ts"
+  },
+  "author": "Paulo Briceno",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "@types/pg": "^8.11.10",
+    "vitest": "^3.0.2"
+  }
+}
