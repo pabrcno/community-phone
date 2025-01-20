@@ -1,6 +1,6 @@
 import type { ICallsRepository, TCall } from "../domain/index.ts";
 import { DatabaseError, NotFoundError } from "./errors.ts";
-import { env } from "../injector.ts";
+
 import pkg from "pg";
 
 export class PostgresCallsRepository implements ICallsRepository {
@@ -20,27 +20,22 @@ export class PostgresCallsRepository implements ICallsRepository {
     );
   }
 
-  async saveStart(call: Omit<TCall, "id" | "ended">): Promise<TCall> {
+  async saveStart(
+    call: Omit<TCall, "id" | "ended" | "duration">
+  ): Promise<TCall> {
     const query = `
-      INSERT INTO calls (call_id, "from", "to", started, duration)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO calls (call_id, "from", "to", started)
+      VALUES ($1, $2, $3, $4)
       ON CONFLICT (call_id)
       DO UPDATE SET
         "from" = EXCLUDED."from",
         "to" = EXCLUDED."to",
-        started = EXCLUDED.started,
-        duration = EXCLUDED.duration
+        started = EXCLUDED.started
       RETURNING *;
     `;
 
     try {
-      const values = [
-        call.callId,
-        call.from,
-        call.to,
-        call.started,
-        call.duration,
-      ];
+      const values = [call.callId, call.from, call.to, call.started];
       const result = await this.pool.query(query, values);
       return result.rows[0];
     } catch (err) {
@@ -55,7 +50,8 @@ export class PostgresCallsRepository implements ICallsRepository {
   ): Promise<TCall> {
     const query = `
       UPDATE calls
-      SET ended = $2, duration = $3
+      SET ended = $2,
+          duration = $3
       WHERE call_id = $1
       RETURNING *;
     `;
@@ -68,9 +64,8 @@ export class PostgresCallsRepository implements ICallsRepository {
       }
       return result.rows[0];
     } catch (err) {
-      if (err instanceof NotFoundError) {
-        throw err;
-      }
+      if (err instanceof NotFoundError) throw err;
+
       throw new DatabaseError(`Error saving end: ${err.message}`, query);
     }
   }
