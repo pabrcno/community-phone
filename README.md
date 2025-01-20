@@ -116,7 +116,7 @@ The certificates will be used by the service for HTTPS connections. The paths to
 
 ### Node Version
 
-This project requires Node.js version 20.6.0.
+This project requires Node.js version 23.6.0.
 
 1. Install dependencies:
 
