@@ -6,6 +6,7 @@ import type {
   TMetricsResponse,
 } from "../domain/index.ts";
 import { InternalServerError } from "../core/index.ts";
+import { AppError } from "../core/app-error.ts";
 
 export class CallsHandler implements ICallsHandler {
   private readonly service: ICallsService;
@@ -29,11 +30,16 @@ export class CallsHandler implements ICallsHandler {
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ status: "ok" }));
       } catch (err) {
-        const internalError = new InternalServerError();
-        res.writeHead(internalError.statusCode, {
-          "Content-Type": "application/json",
-        });
-        res.end(JSON.stringify({ error: internalError.message }));
+        if (err instanceof AppError) {
+          res.writeHead(err.statusCode, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: err.message }));
+        } else {
+          const internalError = new InternalServerError();
+          res.writeHead(internalError.statusCode, {
+            "Content-Type": "application/json",
+          });
+          res.end(JSON.stringify({ error: internalError.message }));
+        }
       }
     });
   }
