@@ -2,6 +2,79 @@
 
 A service for tracking phone calls, recording their start and end times, and providing metrics about unfinished calls.
 
+## Testing the API
+
+http://community-phone.sliplane.app
+
+The service exposes two main endpoints for tracking calls and retrieving metrics:
+
+### POST /events
+
+Used to submit call events (start/end). Expects a JSON payload with the following structure:
+
+```
+{
+    "call_id": "string",
+    "from": "string",
+    "to": "string",
+    "started": "string",
+    "ended": "string (optional)"
+}
+```
+
+#### Expected Outputs
+
+- **Success Response:**
+
+  - **Code:** 200
+  - **Content:**
+    ```json
+    {
+      "status": "ok"
+    }
+    ```
+
+- **Error Response:**
+  - **Code:** 400
+  - **Content:**
+    ```json
+    {
+      "error": "Bad Request"
+    }
+    ```
+  - **Code:** 500
+  - **Content:**
+    ```json
+    {
+      "error": "Internal Server Error"
+    }
+    ```
+
+### GET /metrics
+
+Used to retrieve metrics about the call events. The response will include the count of the latest unfinished calls. The response structure is as follows:
+
+#### Expected Outputs
+
+- **Success Response:**
+
+  - **Code:** 200
+  - **Content:**
+    ```json
+    {
+      "latestUnfinishedCalls": "number"
+    }
+    ```
+
+- **Error Response:**
+  - **Code:** 500
+  - **Content:**
+    ```json
+    {
+      "error": "Failed to retrieve metrics"
+    }
+    ```
+
 ## Features
 
 - Track call start events with caller and recipient information
@@ -20,6 +93,8 @@ To run the service securely, you'll need to generate SSL certificates. Follow th
    ```bash
    mkdir certs
    ```
+
+````
 
 2. Generate a private key:
 
@@ -96,3 +171,4 @@ To run the entire application stack in Docker:
    ```bash
    docker-compose down
    ```
+````

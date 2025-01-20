@@ -107,12 +107,16 @@ export class PostgresCallsRepository implements ICallsRepository {
   }
 
   async findUnfinishedCalls(lastTwoHours: Date): Promise<TCall[]> {
+    const oneHourAgo = new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString();
     const query = `
       SELECT * FROM calls
-      WHERE ended IS NULL AND started >= $1;
+      WHERE ended IS NULL AND started >= $1 AND started < $2;
     `;
     try {
-      const result = await this.pool.query(query, [lastTwoHours.toISOString()]);
+      const result = await this.pool.query(query, [
+        oneHourAgo,
+        lastTwoHours.toISOString(),
+      ]);
       return result.rows;
     } catch (err) {
       throw new DatabaseError(

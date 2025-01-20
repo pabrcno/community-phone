@@ -164,9 +164,8 @@ describe("PostgresCallRepository", () => {
       });
     });
   });
-
   describe("findUnfinishedCalls", () => {
-    it("should find unfinished calls from last 2 hours", async () => {
+    it("should retrieve the total number of calls that failed to be marked as ended in the last 2 hours", async () => {
       const call = {
         callId: "123",
         from: "555-0123",
@@ -175,10 +174,12 @@ describe("PostgresCallRepository", () => {
       };
       await repository.saveStart(call);
 
-      const twoHoursAgo = new Date();
-      twoHoursAgo.setHours(twoHoursAgo.getHours() - 2);
+      const oneHourAgo = new Date();
+      oneHourAgo.setHours(oneHourAgo.getHours() - 1);
 
-      const results = await repository.findUnfinishedCalls(twoHoursAgo);
+      const now = new Date();
+
+      const results = await repository.findUnfinishedCalls(now);
 
       expect(results).toHaveLength(1);
       expect(results[0]).toMatchObject({
