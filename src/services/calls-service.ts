@@ -1,5 +1,4 @@
 import { BadRequestError, NotFoundError } from "../core/index.ts";
-import { logger } from "../core/logger.ts";
 import type {
   ICallsRepository,
   ICallsService,
