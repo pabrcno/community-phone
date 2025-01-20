@@ -66,7 +66,6 @@ export class CallsService implements ICallsService {
 
     const unfinishedCalls = await this.repository.findStaleCalls(twoHoursAgo);
 
-    logger.logInfo(`Found ${unfinishedCalls.length} unfinished calls.`);
     return unfinishedCalls.length;
   }
 
