@@ -105,35 +105,6 @@ Used to retrieve metrics about the call events. The response will include the co
     }
     ```
 
-## SSL Certificate Generation
-
-To run the service securely, you'll need to generate SSL certificates. Follow these steps:
-
-1. Create a directory for certificates:
-
-   ```bash
-   mkdir certs
-   ```
-
-2. Generate a private key:
-
-   ```bash
-   openssl genrsa -out certs/server.key 2048
-   ```
-
-3. Generate a certificate signing request (CSR):
-
-   ```bash
-   openssl req -new -key certs/server.key -out certs/server.csr
-   ```
-
-4. Generate a self-signed certificate:
-   ```bash
-   openssl x509 -req -days 365 -in certs/server.csr -signkey certs/server.key -out certs/server.crt
-   ```
-
-The certificates will be used by the service for HTTPS connections. The paths to these files should match the SSL_KEY_PATH and SSL_CERT_PATH environment variables in your .env file.
-
 ## Local Development Setup
 
 ### Node Version
