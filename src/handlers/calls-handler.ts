@@ -46,8 +46,8 @@ export class CallsHandler implements ICallsHandler {
 
   async handleMetrics(_: IncomingMessage, res: ServerResponse): Promise<void> {
     try {
-      const latestUnfinishedCalls = await this.service.getStaleCallsCount();
-      const response: TMetricsResponse = { latestUnfinishedCalls };
+      const latestStaleCalls = await this.service.getStaleCallsCount();
+      const response: TMetricsResponse = { latestStaleCalls };
 
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify(response));

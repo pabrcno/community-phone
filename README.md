@@ -1,6 +1,6 @@
 # Call Tracking Service
 
-A service for tracking phone calls, recording their start and end times, and providing metrics about unfinished calls.
+A service for tracking phone calls, recording their start and end times, and providing metrics about Stale calls.
 
 ## Features
 
@@ -60,7 +60,7 @@ Used to submit call events (start/end). Expects a JSON payload with the followin
 
 ### GET /metrics
 
-Used to retrieve metrics about the call events. The response will include the count of the latest unfinished calls. The response structure is as follows:
+Used to retrieve metrics about the call events. The response will include the count of the latest Stale calls. The response structure is as follows:
 
 #### Expected Outputs
 
@@ -70,7 +70,7 @@ Used to retrieve metrics about the call events. The response will include the co
   - **Content:**
     ```json
     {
-      "latestUnfinishedCalls": "number"
+      "latestStaleCalls": "number"
     }
     ```
 
@@ -92,8 +92,6 @@ To run the service securely, you'll need to generate SSL certificates. Follow th
    ```bash
    mkdir certs
    ```
-
-````
 
 2. Generate a private key:
 
@@ -170,4 +168,3 @@ To run the entire application stack in Docker:
    ```bash
    docker-compose down
    ```
-````

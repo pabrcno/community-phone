@@ -1,3 +1,3 @@
 export type TMetricsResponse = {
-  latestUnfinishedCalls: number;
+  latestStaleCalls: number;
 };

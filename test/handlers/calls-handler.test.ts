@@ -125,7 +125,7 @@ describe("CallsHandler", () => {
         "Content-Type": "application/json",
       });
       expect(mockResponse.end).toHaveBeenCalledWith(
-        JSON.stringify({ latestUnfinishedCalls: staleCallsCount })
+        JSON.stringify({ latestStaleCalls: staleCallsCount })
       );
     });
 
