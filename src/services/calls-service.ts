@@ -54,7 +54,9 @@ export class CallsService implements ICallsService {
 
   async getStaleCallsCount(): Promise<number> {
     const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
+
     const unfinishedCalls = await this.repository.findStaleCalls(twoHoursAgo);
+
     logger.logInfo(`Found ${unfinishedCalls.length} unfinished calls.`);
     return unfinishedCalls.length;
   }

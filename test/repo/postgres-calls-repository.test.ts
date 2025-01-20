@@ -138,21 +138,22 @@ describe("PostgresCallRepository", () => {
     });
   });
   describe("findStaleCalls", () => {
-    it("should retrieve the total number of calls that failed to be marked as ended in the last 2 hours", async () => {
+    it("should find stale calls between start and cutoff dates", async () => {
+      const oneHourThirtyMinutesAgo = new Date(
+        Date.now() - 1.5 * 60 * 60 * 1000
+      );
       const call = {
         callId: "123",
         from: "555-0123",
         to: "555-4567",
-        started: new Date().toISOString(),
+        started: oneHourThirtyMinutesAgo.toISOString(),
       };
       await repository.saveStart(call);
 
-      const oneHourAgo = new Date();
-      oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+      const oneHourAgo = new Date(Date.now() - 1 * 60 * 60 * 1000);
+      const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
 
-      const now = new Date();
-
-      const results = await repository.findStaleCalls(now);
+      const results = await repository.findStaleCalls(twoHoursAgo, oneHourAgo);
 
       expect(results).toHaveLength(1);
       expect(results[0]).toMatchObject({
@@ -160,6 +161,44 @@ describe("PostgresCallRepository", () => {
         ended: null,
         duration: null,
       });
+    });
+
+    it("should not find calls that started less than 1 hour before cutoff", async () => {
+      const thirtyMinsAgo = new Date(Date.now() - 30 * 60 * 1000);
+      const call = {
+        callId: "123",
+        from: "555-0123",
+        to: "555-4567",
+        started: thirtyMinsAgo.toISOString(),
+      };
+      await repository.saveStart(call);
+
+      const now = new Date();
+      const oneHourAgo = new Date(Date.now() - 1 * 60 * 60 * 1000);
+
+      const results = await repository.findStaleCalls(now, oneHourAgo);
+
+      expect(results).toHaveLength(0);
+    });
+
+    it("should not find calls that have ended", async () => {
+      const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
+      const call = {
+        callId: "123",
+        from: "555-0123",
+        to: "555-4567",
+        started: twoHoursAgo.toISOString(),
+      };
+      const saved = await repository.saveStart(call);
+
+      const oneHourAgo = new Date(Date.now() - 1 * 60 * 60 * 1000);
+      await repository.saveEnd(call.callId, oneHourAgo.toISOString(), 3600000);
+
+      const now = new Date();
+
+      const results = await repository.findStaleCalls(now, oneHourAgo);
+
+      expect(results).toHaveLength(0);
     });
   });
 });

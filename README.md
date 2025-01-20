@@ -162,7 +162,6 @@ To run the entire application stack in Docker:
 2. The application will be available at:
 
    - HTTP: http://localhost:3000
-   - HTTPS: https://localhost:3000
 
 3. Stop all services:
    ```bash

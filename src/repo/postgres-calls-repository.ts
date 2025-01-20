@@ -90,16 +90,20 @@ export class PostgresCallsRepository implements ICallsRepository {
     }
   }
 
-  async findStaleCalls(olderThan: Date): Promise<TCall[]> {
-    const oneHourAgo = new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString();
+  async findStaleCalls(
+    cutoff: Date,
+    start = new Date(Date.now() - 1 * 60 * 60 * 1000)
+  ): Promise<TCall[]> {
     const query = `
       SELECT * FROM calls
-      WHERE ended IS NULL AND started >= $1 AND started < $2;
+      WHERE ended IS NULL 
+      AND started < $1
+      AND started >= $2;
     `;
     try {
       const result = await this.pool.query(query, [
-        oneHourAgo,
-        olderThan.toISOString(),
+        start.toISOString(),
+        cutoff.toISOString(),
       ]);
       return result.rows;
     } catch (err) {

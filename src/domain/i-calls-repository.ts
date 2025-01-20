@@ -33,8 +33,8 @@ export interface ICallsRepository {
   /**
    * Finds calls that are older than the specified time and do not have an `ended` timestamp.
    * It should return all calls that were started more than 1 hour ago and before the cutoff timestamp.
-   * @param olderThan The cutoff timestamp for finding stale calls.
+   * @param cutoff The cutoff timestamp for finding stale calls.
    * @returns A list of stale calls.
    */
-  findStaleCalls(olderThan: Date): Promise<TCall[]>;
+  findStaleCalls(cutoff: Date, start?: Date): Promise<TCall[]>;
 }
