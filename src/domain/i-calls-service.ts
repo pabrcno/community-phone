@@ -28,26 +28,25 @@ export interface ICallsService {
   handleEvent(event: TCallEvent): Promise<void>;
 
   /**
-   * Retrieves the count of calls that remain unfinished (missing an `ended` timestamp)
-   * within the last 2 hours.
+   * Provides the total number of calls that were not marked as ended within the last two hours.
    *
    * Use Case:
-   * - Used by monitoring systems to track calls that may not have received
-   *   an `ended` event from the external service.
+   * - This is used by monitoring systems to identify calls that may not have received
+   *   an `ended` event from the external provider.
    *
    * Behavior:
    * - Queries the `CallRepository` for calls that:
-   *   1. Have a `started` timestamp within the last 2 hours.
+   *   1. Have a `started` timestamp within the last two hours.
    *   2. Do not have an `ended` timestamp.
    *
    * Response:
    * - Returns the total count of such calls as a number.
    *
    * Cron Logic Interaction:
-   * - Auto-closed calls are excluded from this count.
-   * - The `/metrics` endpoint exposes this count for real-time monitoring.
+   * - Calls that are auto-closed after one hour are excluded from this count.
+   * - The `/metrics` endpoint provides this count for real-time monitoring.
    *
-   * @returns The number of calls without an `ended` timestamp in the last 2 hours.
+   * @returns The number of calls without an `ended` timestamp in the last two hours.
    */
   getUnfinishedCallsCount(): Promise<number>;
 }
