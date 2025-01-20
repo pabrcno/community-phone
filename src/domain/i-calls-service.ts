@@ -1,4 +1,5 @@
 import type { TCallEvent } from "./t-call-event.ts";
+import { TCall } from "./t-call.ts";
 
 export interface ICallsService {
   /**
@@ -25,7 +26,7 @@ export interface ICallsService {
    * @param event The call event payload, containing `call_id`, `from`, `to`,
    *   and either `started` or `ended` timestamps.
    */
-  handleEvent(event: TCallEvent): Promise<void>;
+  handleEvent(event: TCallEvent): Promise<TCall | null>;
 
   /**
    * Provides the total number of calls that were not marked as ended within the last two hours.

@@ -18,15 +18,27 @@ The service exposes two main endpoints for tracking calls and retrieving metrics
 
 ### POST /events
 
-Used to submit call events (start/end). Expects a JSON payload with the following structure:
+Used to submit call events (start/end). Expects a JSON payload with one of the following structures:
+
+For call start:
 
 ```
 {
-    "call_id": "string",
-    "from": "string",
-    "to": "string",
-    "started": "string",
-    "ended": "string (optional)"
+"call_id": "string",
+"started": "ISO 8601 timestamp",
+"from": "string",
+"to": "string"
+}
+```
+
+For call end:
+
+```
+{
+"call_id": "string",
+"ended": "ISO 8601 timestamp",
+"from": "string",
+"to": "string"
 }
 ```
 

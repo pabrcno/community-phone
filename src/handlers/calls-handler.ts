@@ -25,10 +25,11 @@ export class CallsHandler implements ICallsHandler {
     req.on("end", async () => {
       try {
         const event: TCallEvent = JSON.parse(body);
-        await this.service.handleEvent(event);
+        const call = await this.service.handleEvent(event);
 
         res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ status: "ok" }));
+
+        res.end(JSON.stringify({ status: "ok", call }));
       } catch (err) {
         if (err instanceof AppError) {
           res.writeHead(err.statusCode, { "Content-Type": "application/json" });
