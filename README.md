@@ -48,9 +48,19 @@ For call end:
 
   - **Code:** 200
   - **Content:**
+
     ```json
     {
-      "status": "ok"
+      "status": "ok",
+     "call": {
+        "id": number,
+        "callId": string,
+        "from": string,
+        "to": string,
+        "started": string,
+        "ended?": string,
+        "duration?": number,
+      }
     }
     ```
 

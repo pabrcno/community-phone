@@ -6,4 +6,6 @@ export type TCall = {
   started: string;
   ended?: string;
   duration?: number;
+  createdAt: string;
+  updatedAt: string;
 };

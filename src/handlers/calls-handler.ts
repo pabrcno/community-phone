@@ -7,6 +7,7 @@ import type {
 } from "../domain/index.ts";
 import { InternalServerError } from "../core/index.ts";
 import { AppError } from "../core/app-error.ts";
+import { DatabaseError } from "../repo/errors.ts";
 
 export class CallsHandler implements ICallsHandler {
   private readonly service: ICallsService;
@@ -31,16 +32,19 @@ export class CallsHandler implements ICallsHandler {
 
         res.end(JSON.stringify({ status: "ok", call }));
       } catch (err) {
-        if (err instanceof AppError) {
-          res.writeHead(err.statusCode, { "Content-Type": "application/json" });
-          res.end(JSON.stringify({ error: err.message }));
-        } else {
-          const internalError = new InternalServerError();
-          res.writeHead(internalError.statusCode, {
-            "Content-Type": "application/json",
-          });
-          res.end(JSON.stringify({ error: internalError.message }));
-        }
+        const errorResponse = {
+          error:
+            err instanceof DatabaseError
+              ? err.name
+              : err instanceof AppError
+              ? err.message
+              : new InternalServerError().message,
+        };
+
+        const statusCode = err instanceof AppError ? err.statusCode : 500;
+
+        res.writeHead(statusCode, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(errorResponse));
       }
     });
   }

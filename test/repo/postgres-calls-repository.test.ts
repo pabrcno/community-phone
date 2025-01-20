@@ -30,6 +30,8 @@ describe("PostgresCallRepository", () => {
         from: "555-0123",
         to: "555-4567",
         started: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       const result = await repository.saveStart(call);
@@ -65,6 +67,8 @@ describe("PostgresCallRepository", () => {
         from: "555-0123",
         to: "555-4567",
         started: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       await repository.saveStart(call);
 
@@ -94,6 +98,8 @@ describe("PostgresCallRepository", () => {
         from: "555-0123",
         to: "555-4567",
         started: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       const saved = await repository.saveStart(call);
 
@@ -119,6 +125,8 @@ describe("PostgresCallRepository", () => {
         from: "555-0123",
         to: "555-4567",
         started: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       await repository.saveStart(call);
 
@@ -147,6 +155,8 @@ describe("PostgresCallRepository", () => {
         from: "555-0123",
         to: "555-4567",
         started: oneHourThirtyMinutesAgo.toISOString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       await repository.saveStart(call);
 
@@ -170,6 +180,8 @@ describe("PostgresCallRepository", () => {
         from: "555-0123",
         to: "555-4567",
         started: thirtyMinsAgo.toISOString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       await repository.saveStart(call);
 
@@ -188,6 +200,8 @@ describe("PostgresCallRepository", () => {
         from: "555-0123",
         to: "555-4567",
         started: twoHoursAgo.toISOString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       const saved = await repository.saveStart(call);
 

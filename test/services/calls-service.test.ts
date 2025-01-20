@@ -34,6 +34,8 @@ describe("CallsService", () => {
         to: event.to,
         started: event.started,
         ended: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       mockRepository.findByCallId = vi.fn().mockResolvedValue(null);
@@ -70,6 +72,8 @@ describe("CallsService", () => {
         to: "456",
         started: startTime.toISOString(),
         ended: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       const expectedCall = {

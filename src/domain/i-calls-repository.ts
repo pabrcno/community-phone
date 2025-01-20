@@ -6,7 +6,9 @@ export interface ICallsRepository {
    * @param call The call data to save (without the `ended` field).
    * @returns The saved call with its internal `id`.
    */
-  saveStart(call: Omit<TCall, "id" | "ended">): Promise<TCall>;
+  saveStart(
+    call: Omit<TCall, "id" | "ended" | "createdAt" | "updatedAt">
+  ): Promise<TCall>;
 
   /**
    * Updates an existing call record to mark the call as ended.

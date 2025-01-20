@@ -15,13 +15,15 @@ export class PostgresCallsRepository implements ICallsRepository {
         "to" VARCHAR(255) NOT NULL,
         started TIMESTAMP NOT NULL,
         ended TIMESTAMP,
-        duration INT
+        duration INT,
+        created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMP NOT NULL DEFAULT NOW()
       )`
     );
   }
 
   async saveStart(
-    call: Omit<TCall, "id" | "ended" | "duration">
+    call: Omit<TCall, "id" | "ended" | "duration" | "createdAt" | "updatedAt">
   ): Promise<TCall> {
     const query = `
       INSERT INTO calls (call_id, "from", "to", started)
@@ -30,7 +32,8 @@ export class PostgresCallsRepository implements ICallsRepository {
       DO UPDATE SET
         "from" = EXCLUDED."from",
         "to" = EXCLUDED."to",
-        started = EXCLUDED.started
+        started = EXCLUDED.started,
+        updated_at = NOW()
       RETURNING *;
     `;
 
@@ -51,7 +54,8 @@ export class PostgresCallsRepository implements ICallsRepository {
     const query = `
       UPDATE calls
       SET ended = $2,
-          duration = $3
+          duration = $3,
+          updated_at = NOW()
       WHERE call_id = $1
       RETURNING *;
     `;
