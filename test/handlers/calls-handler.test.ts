@@ -12,10 +12,8 @@ describe("CallsHandler", () => {
 
   beforeEach(() => {
     mockService = {
-      handleEvent: vi.fn().mockImplementation(() => Promise.resolve()),
-      getUnfinishedCallsCount: vi
-        .fn()
-        .mockImplementation(() => Promise.resolve(0)),
+      handleEvent: vi.fn().mockResolvedValue(undefined),
+      getStaleCallsCount: vi.fn().mockResolvedValue(0),
     };
 
     handler = new CallsHandler(mockService);
@@ -116,10 +114,10 @@ describe("CallsHandler", () => {
 
   describe("handleMetrics", () => {
     it("should return metrics successfully", async () => {
-      const unfinishedCalls = 5;
-      mockService.getUnfinishedCallsCount = vi
+      const staleCallsCount = 5;
+      mockService.getStaleCallsCount = vi
         .fn()
-        .mockResolvedValue(unfinishedCalls);
+        .mockResolvedValue(staleCallsCount);
 
       await handler.handleMetrics(mockRequest, mockResponse);
 
@@ -127,12 +125,12 @@ describe("CallsHandler", () => {
         "Content-Type": "application/json",
       });
       expect(mockResponse.end).toHaveBeenCalledWith(
-        JSON.stringify({ latestUnfinishedCalls: unfinishedCalls })
+        JSON.stringify({ latestUnfinishedCalls: staleCallsCount })
       );
     });
 
     it("should handle errors when getting metrics", async () => {
-      mockService.getUnfinishedCallsCount = vi
+      mockService.getStaleCallsCount = vi
         .fn()
         .mockRejectedValue(new Error("Database error"));
 

@@ -12,7 +12,6 @@ describe("CallsService", () => {
       findByCallId: vi.fn(),
       saveStart: vi.fn(),
       saveEnd: vi.fn(),
-      findUnfinishedCalls: vi.fn(),
       findById: vi.fn(),
       findStaleCalls: vi.fn(),
     };
@@ -110,9 +109,9 @@ describe("CallsService", () => {
     });
   });
 
-  describe("getUnfinishedCallsCount", () => {
-    it("should return the count of unfinished calls", async () => {
-      const unfinishedCalls = [
+  describe("getStaleCallsCount", () => {
+    it("should return the count of stale calls", async () => {
+      const staleCalls = [
         {
           id: "1",
           callId: "123",
@@ -121,22 +120,20 @@ describe("CallsService", () => {
         },
       ];
 
-      mockRepository.findUnfinishedCalls = vi
-        .fn()
-        .mockResolvedValue(unfinishedCalls);
+      mockRepository.findStaleCalls = vi.fn().mockResolvedValue(staleCalls);
 
-      const result = await service.getUnfinishedCallsCount();
+      const result = await service.getStaleCallsCount();
 
-      expect(mockRepository.findUnfinishedCalls).toHaveBeenCalled();
-      expect(result).toBe(unfinishedCalls.length);
+      expect(mockRepository.findStaleCalls).toHaveBeenCalled();
+      expect(result).toBe(staleCalls.length);
     });
 
     it("should handle errors gracefully", async () => {
-      mockRepository.findUnfinishedCalls = vi
+      mockRepository.findStaleCalls = vi
         .fn()
         .mockRejectedValue(new Error("Database error"));
 
-      await expect(service.getUnfinishedCallsCount()).rejects.toThrow(Error);
+      await expect(service.getStaleCallsCount()).rejects.toThrow(Error);
     });
   });
 });

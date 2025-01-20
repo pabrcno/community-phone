@@ -91,22 +91,6 @@ export class PostgresCallsRepository implements ICallsRepository {
   }
 
   async findStaleCalls(olderThan: Date): Promise<TCall[]> {
-    const query = `
-      SELECT * FROM calls
-      WHERE ended IS NULL AND started < $1;
-    `;
-    try {
-      const result = await this.pool.query(query, [olderThan.toISOString()]);
-      return result.rows;
-    } catch (err) {
-      throw new DatabaseError(
-        `Error finding stale calls: ${err.message}`,
-        query
-      );
-    }
-  }
-
-  async findUnfinishedCalls(lastTwoHours: Date): Promise<TCall[]> {
     const oneHourAgo = new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString();
     const query = `
       SELECT * FROM calls
@@ -115,7 +99,7 @@ export class PostgresCallsRepository implements ICallsRepository {
     try {
       const result = await this.pool.query(query, [
         oneHourAgo,
-        lastTwoHours.toISOString(),
+        olderThan.toISOString(),
       ]);
       return result.rows;
     } catch (err) {

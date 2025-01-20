@@ -137,34 +137,7 @@ describe("PostgresCallRepository", () => {
       expect(result).toBeNull();
     });
   });
-
   describe("findStaleCalls", () => {
-    it("should find stale calls", async () => {
-      const oldDate = new Date();
-      oldDate.setHours(oldDate.getHours() - 3);
-
-      const call = {
-        callId: "123",
-        from: "555-0123",
-        to: "555-4567",
-        started: oldDate.toISOString(),
-      };
-      await repository.saveStart(call);
-
-      const cutoffDate = new Date();
-      cutoffDate.setHours(cutoffDate.getHours() - 1);
-
-      const results = await repository.findStaleCalls(cutoffDate);
-
-      expect(results).toHaveLength(1);
-      expect(results[0]).toMatchObject({
-        call_id: call.callId,
-        ended: null,
-        duration: null,
-      });
-    });
-  });
-  describe("findUnfinishedCalls", () => {
     it("should retrieve the total number of calls that failed to be marked as ended in the last 2 hours", async () => {
       const call = {
         callId: "123",
@@ -179,7 +152,7 @@ describe("PostgresCallRepository", () => {
 
       const now = new Date();
 
-      const results = await repository.findUnfinishedCalls(now);
+      const results = await repository.findStaleCalls(now);
 
       expect(results).toHaveLength(1);
       expect(results[0]).toMatchObject({

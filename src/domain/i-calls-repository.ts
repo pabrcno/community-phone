@@ -37,11 +37,4 @@ export interface ICallsRepository {
    * @returns A list of stale calls.
    */
   findStaleCalls(olderThan: Date): Promise<TCall[]>;
-
-  /**
-   * Finds calls that started within the last hour and do not have an `ended` timestamp.
-   * @param interval The cutoff timestamp.
-   * @returns A list of unfinished calls.
-   */
-  findUnfinishedCalls(interval: Date): Promise<TCall[]>;
 }

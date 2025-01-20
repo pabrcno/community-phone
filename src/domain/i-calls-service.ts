@@ -48,5 +48,5 @@ export interface ICallsService {
    *
    * @returns The number of calls without an `ended` timestamp in the last two hours.
    */
-  getUnfinishedCallsCount(): Promise<number>;
+  getStaleCallsCount(): Promise<number>;
 }
