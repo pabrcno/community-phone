@@ -19,6 +19,17 @@ export interface ICallsHandler {
    * - Delegates processing logic to the `CallService` to handle persistence and business rules.
    * - Responds with:
    *   - **200 OK**: If the event is successfully processed.
+   *   - call: {
+   *         id: number;
+   *        callId: string;
+   *         from: string;
+   *         to: string;
+   *         started: string;
+   *         ended?: string;
+   *         duration?: number;
+   *         createdAt: string;
+   *         updatedAt: string;
+   *       }  
    *   - **400 Bad Request**: If the JSON payload is invalid or required fields are missing.
    *
    * @param req The incoming HTTP request containing the event payload.
