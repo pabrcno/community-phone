@@ -45,7 +45,7 @@ export interface ICallsHandler {
    * - **200 OK**: Includes the count of unfinished calls in the following structure:
    *   ```json
    *   {
-   *     "unfinished_calls_2h": 5
+   *     "latestStaleCalls": 5
    *   }
    *   ```
    * - **500 Internal Server Error**: If an unexpected issue occurs during processing.
