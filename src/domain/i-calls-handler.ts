@@ -21,7 +21,7 @@ export interface ICallsHandler {
    *   - **200 OK**: If the event is successfully processed.
    *   - call: {
    *         id: number;
-   *        callId: string;
+   *         callId: string;
    *         from: string;
    *         to: string;
    *         started: string;
